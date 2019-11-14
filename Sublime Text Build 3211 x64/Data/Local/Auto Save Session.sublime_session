@@ -159,7 +159,7 @@
 					"file": "/C/Users/mestrep/Desktop/python/test.py",
 					"settings":
 					{
-						"buffer_size": 1159,
+						"buffer_size": 1173,
 						"encoding": "UTF-8",
 						"line_ending": "Windows"
 					}
@@ -240,15 +240,15 @@
 							"semi_transient": false,
 							"settings":
 							{
-								"buffer_size": 1159,
+								"buffer_size": 1173,
 								"regions":
 								{
 								},
 								"selection":
 								[
 									[
-										267,
-										267
+										1073,
+										1073
 									]
 								],
 								"settings":

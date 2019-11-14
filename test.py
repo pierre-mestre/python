@@ -12,7 +12,7 @@ def get_code_iso(name):
 	# print(url)
 	reponse = requests.get(url)
 	if reponse.status_code != 200 :
-		#print(name)
+		print(name)
 		return ""
 	dico = json.loads(reponse.text)
 	return dico[0]['alpha3Code']
@@ -33,8 +33,8 @@ m.choropleth(
  geo_data=state_geo,
  name='choropleth',
  data=df,
- columns=['country', 'Population density (per km2, 2017)'],
- key_on='feature.iso_a3',
+ columns=['codeCountry', 'Population density (per km2, 2017)'],
+ key_on='feature.properties.iso_a3',
  fill_color='YlGn',
  fill_opacity=0.7,
  line_opacity=0.2,
