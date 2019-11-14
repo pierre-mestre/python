@@ -2,69 +2,45 @@ import csv
 import pandas as pd
 import folium
 import branca
+import urllib.parse
+import requests
+import json
+
+
+def get_code_iso(name):
+	url = f"https://restcountries.eu/rest/v2/name/{name}"
+	# print(url)
+	reponse = requests.get(url)
+	if reponse.status_code != 200 :
+		#print(name)
+		return ""
+	dico = json.loads(reponse.text)
+	return dico[0]['alpha3Code']
 
 df = pd.read_csv('donnee.csv', encoding = 'utf-8')
-print(df[['Population density (per km2, 2017)', 'country']])
+df['codeCountry'] = df['country'].apply(get_code_iso)
+#print(df[['country','codeCountry', 'Population density (per km2, 2017)']])
+# for row in df['country']:
+	# print(get_iso(row))
+# with open('coordonne.geo.json') as json_file:
+#     data = json.load(json_file)
+#     print(data['features'][0]['geometry'])
 
-coords = (46.6299767,1.8489683)
-map = folium.Map(location=coords, tiles='OpenStreetMap', zoom_start=7)
+state_geo = 'coordonne.geo.json'
 
-# define a colorbar between min and max values
-
-STATIONS = ['ABBEVILLE', 'AJACCIO', 'ALENCON', 'BALE-MULHOUSE',
-            'BELLE ILE-LE TALUT', 'BORDEAUX-MERIGNAC', 'BOURGES',
-            'BREST-GUIPAVAS', 'CAEN-CARPIQUET', 'CAP CEPET',
-            'CLERMONT-FD', 'DIJON-LONGVIC', 'EMBRUN', 'GOURDON',
-            'LE PUY-LOUDES', 'LILLE-LESQUIN', 'LIMOGES-BELLEGARDE',
-            'LYON-ST EXUPERY', 'MARIGNANE', 'MILLAU', 'MONT-DE-MARSAN',
-            'MONTELIMAR', 'MONTPELLIER', 'NANCY-OCHEY',
-            'NANTES-BOUGUENAIS', 'NICE', 'ORLY', 'PERPIGNAN',
-            "PLOUMANAC'H", 'POITIERS-BIARD', 'PTE DE CHASSIRON',
-            'PTE DE LA HAGUE', 'REIMS-PRUNAY', 'RENNES-ST JACQUES',
-            'ROUEN-BOOS', 'ST GIRONS', 'STRASBOURG-ENTZHEIM',
-            'TARBES-OSSUN', 'TOULOUSE-BLAGNAC', 'TOURS', 'TROYES-BARBEREY']
-
-LATS = [50.136, 41.918, 48.4455, 47.614333, 47.294333,
-        44.830667, 47.059167, 48.444167, 49.18, 43.079333,
-        45.786833, 47.267833, 44.565667, 44.745, 45.0745,
-        50.57, 45.861167, 45.7265, 43.437667, 44.1185,
-        43.909833, 44.581167, 43.577, 48.581, 47.15,
-        43.648833, 48.716833, 42.737167, 48.825833,
-        46.593833, 46.046833, 49.725167, 49.209667,
-        48.068833, 49.383, 43.005333, 48.5495, 43.188,
-        43.621, 47.4445, 48.324667]
-
-LONGS = [1.834, 8.792667, 0.110167, 7.51, -3.218333, -0.691333,
-         2.359833, -4.412, -0.456167, 5.940833, 3.149333, 5.088333,
-         6.502333, 1.396667, 3.764, 3.0975, 1.175, 5.077833, 5.216,
-         3.0195, -0.500167, 4.733, 3.963167, 5.959833, -1.608833,
-         7.209, 2.384333, 2.872833, -3.473167, 0.314333, -1.4115,
-         -1.939833, 4.155333, -1.734, 1.181667, 1.106833, 7.640333,
-         0.0, 1.378833, 0.727333, 4.02]
-
-TEMPS = [7.6, 13.5, 7.6, 6.8, 10.5, 11.5, 8.5, 9.7, 8.6, 11.8, 9.1,
-         7.2, 5.7, 9.2, 6.0, 7.2, 7.6, 8.4, 12.0, 6.1, 11.6, 9.6, 11.7,
-         6.5, 10.0, 11.7, 8.1, 12.6, 9.9, 9.1, 10.8, 9.5, 7.4, 9.0,
-         7.1, 10.3, 6.7, 10.8, 10.6, 8.4, 8.1]
-
-cm = branca.colormap.LinearColormap(['blue', 'yellow', 'red'], vmin=min(TEMPS), vmax=max(TEMPS))
-map.add_child(cm) # add this colormap on the display
-
-f = folium.map.FeatureGroup() # create a group
-
-for lat, lng, size, color in zip(LATS, LONGS, TEMPS, TEMPS):
-    print(lat, lng, size, color)
-    f.add_child( # add iteratively a CircleMarker to this group
-        folium.CircleMarker(
-            location=[lat, lng],
-            radius=size,
-            color=None,
-            fill=True,
-            fill_color=cm(color),
-            fill_opacity=0.6)
-    )
-
-
-map.add_child(f) # add the group to the map
-
-map.save(outfile='map.html')
+m = folium.Map(location=[37, -102], zoom_start=5)
+m.choropleth(
+ geo_data=state_geo,
+ name='choropleth',
+ data=df,
+ columns=['country', 'Population density (per km2, 2017)'],
+ key_on='feature.iso_a3',
+ fill_color='YlGn',
+ fill_opacity=0.7,
+ line_opacity=0.2,
+ legend_name='Population density (per km2, 2017)'
+)
+folium.LayerControl().add_to(m)
+ 
+# Save to html
+m.save('Population density (per km2, 2017).html')
