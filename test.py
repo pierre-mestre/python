@@ -18,6 +18,10 @@ def get_code_iso(name):
 	return dico[0]['alpha3Code']
 
 df = pd.read_csv('donnee.csv', encoding = 'utf-8')
+df.rename(columns={'Population density (per km2, 2017)': 'density'}, inplace=True )
+df.drop(df[df.density > 500].index, inplace=True)
+df.rename(columns={'density': 'Population density (per km2, 2017)'}, inplace=True )
+#df.drop(df.loc[df['Population density (per km2, 2017)'] > 1000], inplace=True)
 df['codeCountry'] = df['country'].apply(get_code_iso)
 #print(df[['country','codeCountry', 'Population density (per km2, 2017)']])
 # for row in df['country']:
@@ -28,7 +32,7 @@ df['codeCountry'] = df['country'].apply(get_code_iso)
 
 state_geo = 'coordonne.geo.json'
 
-m = folium.Map(location=[37, -102], zoom_start=5)
+m = folium.Map(location=[10, 10], zoom_start=3)
 m.choropleth(
  geo_data=state_geo,
  name='choropleth',
