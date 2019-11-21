@@ -5,6 +5,9 @@ import branca
 import urllib.parse
 import requests
 import json
+import math 
+import numpy as np # import package
+import matplotlib.pyplot as plt # import module
 
 
 def get_code_iso(name):
@@ -18,11 +21,18 @@ def get_code_iso(name):
 	return dico[0]['alpha3Code']
 
 df = pd.read_csv('donnee.csv', encoding = 'utf-8')
-df.rename(columns={'Population density (per km2, 2017)': 'density'}, inplace=True )
-df.drop(df[df.density > 500].index, inplace=True)
-df.rename(columns={'density': 'Population density (per km2, 2017)'}, inplace=True )
+
+
+
+df['Population density (per km2, 2017)'] = np.log(df['Population density (per km2, 2017)'])
+df[['country', 'Population density (per km2, 2017)']].hist(bins=50)
+
+	# df.rename(columns={'Population density (per km2, 2017)': 'density'}, inplace=True )
+	# df.drop(df[df.density > 500].index, inplace=True)
+	# df.rename(columns={'density': 'Population density (per km2, 2017)'}, inplace=True )
 #df.drop(df.loc[df['Population density (per km2, 2017)'] > 1000], inplace=True)
 df['codeCountry'] = df['country'].apply(get_code_iso)
+
 #print(df[['country','codeCountry', 'Population density (per km2, 2017)']])
 # for row in df['country']:
 	# print(get_iso(row))
@@ -48,3 +58,8 @@ folium.LayerControl().add_to(m)
  
 # Save to html
 m.save('Population density (per km2, 2017).html')
+
+
+
+plt.show()
+

@@ -159,7 +159,7 @@
 					"file": "/C/Users/mestrep/Desktop/python/test.py",
 					"settings":
 					{
-						"buffer_size": 1173,
+						"buffer_size": 1755,
 						"encoding": "UTF-8",
 						"line_ending": "Windows"
 					}
@@ -197,6 +197,7 @@
 			},
 			"file_history":
 			[
+				"/C/Users/mestrep/Desktop/python/donnee.csv"
 			],
 			"find":
 			{
@@ -240,15 +241,15 @@
 							"semi_transient": false,
 							"settings":
 							{
-								"buffer_size": 1173,
+								"buffer_size": 1755,
 								"regions":
 								{
 								},
 								"selection":
 								[
 									[
-										1073,
-										1073
+										1754,
+										1754
 									]
 								],
 								"settings":
@@ -256,7 +257,7 @@
 									"syntax": "Packages/Python/Python.sublime-syntax"
 								},
 								"translation.x": 0.0,
-								"translation.y": 0.0,
+								"translation.y": 270.0,
 								"zoom_level": 1.0
 							},
 							"stack_index": 0,
