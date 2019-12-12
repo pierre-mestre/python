@@ -3,13 +3,12 @@
 	[
 	],
 	"last_version": 3211,
-	"last_window_id": 1,
+	"last_window_id": 2,
 	"log_indexing": false,
 	"settings":
 	{
-	},
-	"windows":
-	[
+		"new_window_height": 480.0,
+		"new_window_settings":
 		{
 			"auto_complete":
 			{
@@ -17,10 +16,6 @@
 				[
 				]
 			},
-			"buffers":
-			[
-			],
-			"build_system": "",
 			"build_system_choices":
 			[
 			],
@@ -83,11 +78,199 @@
 				"whole_word": false,
 				"wrap": true
 			},
+			"incremental_find":
+			{
+				"height": 0.0
+			},
+			"input":
+			{
+				"height": 0.0
+			},
+			"menu_visible": true,
+			"output.find_results":
+			{
+				"height": 0.0
+			},
+			"pinned_build_system": "",
+			"replace":
+			{
+				"height": 0.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_symbol":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"show_minimap": true,
+			"show_open_files": false,
+			"show_tabs": true,
+			"side_bar_visible": true,
+			"side_bar_width": 150.0,
+			"status_bar_visible": true,
+			"template_settings":
+			{
+			}
+		},
+		"new_window_width": 640.0
+	},
+	"windows":
+	[
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+					[
+						"re",
+						"red"
+					],
+					[
+						"cou",
+						"codeCountry"
+					],
+					[
+						"get",
+						"get_iso"
+					]
+				]
+			},
+			"buffers":
+			[
+				{
+					"contents": "import csv\nimport pandas as pd\nimport folium\nimport branca\nimport urllib.parse\nimport requests\nimport json\nimport math \nimport numpy as np # import package\nimport matplotlib.pyplot as plt # import module\n\n\ndef get_code_iso(name):\n\turl = f\"https://restcountries.eu/rest/v2/name/{name}\"\n\t# print(url)\n\treponse = requests.get(url)\n\tif reponse.status_code != 200 :\n\t\tprint(\"...\")\n\t\treturn \"\"\n\tdico = json.loads(reponse.text)\n\treturn dico[0]['alpha3Code']\n\ndf = pd.read_csv('donnee.csv', encoding = 'utf-8')\nprint(\"Chargement en cours veuillez patienter (environ 1 a 2 min)\")\n\ndf[['country', 'Population density (per km2, 2017)']].hist(bins=50, color='red')\nplt.xlabel('densité (nombre de personne / Km²')\nplt.ylabel('nombre de pays conscerné')\nplt.title('HISTOGRAMME: densité de population / Km² par pays du monde')\n\ndf['Population density (per km2, 2017)'] = np.log(df['Population density (per km2, 2017)'])\ndf[['country', 'Population density (per km2, 2017)']].hist(bins=50, color='green')\nplt.xlabel('log(densité (nombre de personne / Km²)')\nplt.ylabel('nombre de pays conscerné')\nplt.title('HISTOGRAMME: LOG(densité de population) / Km² par pays du monde')\n\t# df.rename(columns={'Population density (per km2, 2017)': 'density'}, inplace=True )\n\t# df.drop(df[df.density > 500].index, inplace=True)\n\t# df.rename(columns={'density': 'Population density (per km2, 2017)'}, inplace=True )\n#df.drop(df.loc[df['Population density (per km2, 2017)'] > 1000], inplace=True)\ndf['codeCountry'] = df['country'].apply(get_code_iso)\n\n#print(df[['country','codeCountry', 'Population density (per km2, 2017)']])\n# for row in df['country']:\n\t# print(get_iso(row))\n# with open('coordonne.geo.json') as json_file:\n#     data = json.load(json_file)\n#     print(data['features'][0]['geometry'])\n\nstate_geo = 'coordonne.geo.json'\n\nm = folium.Map(location=[10, 10], zoom_start=3)\nm.choropleth(\n geo_data=state_geo,\n name='choropleth',\n data=df,\n columns=['codeCountry', 'Population density (per km2, 2017)'],\n key_on='feature.properties.iso_a3',\n fill_color='YlGn',\n fill_opacity=0.7,\n line_opacity=0.2,\n legend_name='log(Population density (per km2, 2017))'\n)\nfolium.LayerControl().add_to(m)\n \n# Save to html\nm.save('Population density (per km2, 2017).html')\nprint(\"Execution terminé\")\n\n\nplt.show()\n\n",
+					"file": "/C/Users/pierr/OneDrive/Bureau/python/test.py",
+					"file_size": 2359,
+					"file_write_time": 132206219131850514,
+					"settings":
+					{
+						"buffer_size": 2277,
+						"encoding": "UTF-8",
+						"line_ending": "Windows"
+					}
+				}
+			],
+			"build_system": "",
+			"build_system_choices":
+			[
+			],
+			"build_varint": "",
+			"command_palette":
+			{
+				"height": 0.0,
+				"last_filter": "",
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"console":
+			{
+				"height": 0.0,
+				"history":
+				[
+				]
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"file_history":
+			[
+				"/C/Users/mestrep/Desktop/python/test.py",
+				"/C/Users/mestrep/Desktop/python/donnee.csv"
+			],
+			"find":
+			{
+				"height": 0.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+				],
+				"reverse": false,
+				"show_context": true,
+				"use_buffer2": true,
+				"whole_word": false,
+				"wrap": true
+			},
 			"groups":
 			[
 				{
+					"selected": 0,
 					"sheets":
 					[
+						{
+							"buffer": 0,
+							"file": "/C/Users/pierr/OneDrive/Bureau/python/test.py",
+							"semi_transient": false,
+							"settings":
+							{
+								"buffer_size": 2277,
+								"regions":
+								{
+								},
+								"selection":
+								[
+									[
+										985,
+										985
+									]
+								],
+								"settings":
+								{
+									"syntax": "Packages/Python/Python.sublime-syntax"
+								},
+								"translation.x": 0.0,
+								"translation.y": 959.0,
+								"zoom_level": 1.0
+							},
+							"stack_index": 0,
+							"type": "text"
+						}
 					]
 				}
 			],
@@ -127,7 +310,7 @@
 				"height": 0.0
 			},
 			"pinned_build_system": "",
-			"position": "0,0,1,-1,-1,-1,-1,669,130,130,786",
+			"position": "0,2,3,-32000,-32000,-1,-1,669,130,130,786",
 			"project": "",
 			"replace":
 			{
